@@ -1,4 +1,8 @@
 #Last update Aug 23, 2022
+
+#My Private
+google.com, pub-6978285544147819, DIRECT, f08c47fec0942fa0
+
 #=== Admob Aug 23, 2022
 google.com, pub-8858162097015410, DIRECT, f08c47fec0942fa0
 google.com, pub-1022958838828668, DIRECT, f08c47fec0942fa0
