@@ -1,0 +1,27 @@
+name: Sync app-ads.txt from CAS
+on:
+  schedule:
+    - cron: '17 5 * * *'   # раз в сутки
+  workflow_dispatch:        # + кнопка ручного запуска
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch CAS list
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/cleveradssolutions/App-ads.txt/main/app-ads.txt -o /tmp/cas.txt
+          grep -qi "google.com, pub-" /tmp/cas.txt        # sanity: файл похож на app-ads
+          [ "$(wc -l < /tmp/cas.txt)" -gt 1000 ]          # sanity: не огрызок
+          cp /tmp/cas.txt app-ads.txt
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet app-ads.txt; then
+            git config user.name "app-ads-sync"
+            git config user.email "actions@users.noreply.github.com"
+            git add app-ads.txt
+            git commit -m "Sync app-ads.txt from CAS upstream"
+            git push
+          fi
